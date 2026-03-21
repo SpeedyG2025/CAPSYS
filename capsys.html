@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CAPSY – Centre d’Appui Psychologique et Social</title>
+    <style>
+        :root{
+            --bg:#f7fbff; --card:#ffffff; --muted:#6b7b86;
+            --accent:#6db3c8; --accent-2:#9fc9a8; --beige:#f3efe6;
+            --radius:12px; --max:1100px; --shadow:0 6px 18px rgba(22,35,45,0.06);
+            --glass:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+        }
+        *{box-sizing:border-box}
+        body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;background:linear-gradient(180deg,var(--bg),var(--beige));color:#123;line-height:1.4}
+        .container{max-width:var(--max);margin:0 auto;padding:24px}
+        header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+        .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--accent)}
+        .logo .mark{width:42px;height:42px;border-radius:8px;background:var(--accent-2);display:flex;align-items:center;justify-content:center;color:white;font-weight:800}
+        nav{display:flex;gap:14px;align-items:center}
+        nav a{color:#123;text-decoration:none;padding:8px;border-radius:8px;font-weight:600}
+        nav a:focus,nav a:hover{background:rgba(0,0,0,0.04)}
+        .donate-btn{background:linear-gradient(90deg,var(--accent),#4aa6a3);color:white;border:none;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;box-shadow:var(--shadow)}
+        .topbar{position:sticky;top:0;backdrop-filter:blur(6px);z-index:20;background:rgba(255,255,255,0.85)}
+        .hero{display:grid;grid-template-columns:1fr;gap:18px;align-items:center;padding:28px 0}
+        .hero-inner{background:var(--card);border-radius:16px;padding:28px;box-shadow:var(--shadow);display:flex;gap:18px;align-items:center}
+        .hero h1{margin:0;font-size:24px;color:#0c3b4a}
+        .cta{display:flex;gap:10px;margin-top:8px}
+        .btn{padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+        .btn-primary{background:var(--accent);color:white}
+        .btn-ghost{background:transparent;border:2px solid rgba(10,65,75,0.06);color:var(--accent)}
+        .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+        @media(max-width:920px){.grid{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:640px){.grid{grid-template-columns:1fr}.hero-inner{flex-direction:column}}
+        .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:var(--shadow)}
+        .activities .cards{display:flex;gap:12px;flex-wrap:wrap}
+        .activity{width:calc(33.333% - 8px);min-width:220px;background:var(--card);border-radius:12px;overflow:hidden}
+        .activity img{width:100%;height:140px;object-fit:cover;display:block}
+        .activity .body{padding:10px}
+        .activity h3{margin:6px 0 4px;font-size:16px}
+        .muted{color:var(--muted);font-size:14px}
+        form label{display:block;margin-top:10px;font-weight:600;font-size:14px}
+        input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef2;margin-top:6px}
+        .inline{display:flex;gap:10px}
+        .inline > *{flex:1}
+        footer{margin-top:28px;padding:24px;border-radius:12px;background:var(--card);box-shadow:var(--shadow);display:flex;gap:24px;flex-wrap:wrap}
+        .socials svg{width:28px;height:28px;margin-right:8px;vertical-align:middle}
+        .fixed-donate{position:fixed;right:18px;bottom:18px;z-index:40;border-radius:999px;padding:14px;background:linear-gradient(90deg,var(--accent),#3aa69f);color:white;border:none;box-shadow:0 10px 30px rgba(17,50,60,0.2)}
+        .modal-back{position:fixed;inset:0;background:rgba(8,20,26,0.4);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+        .modal{background:var(--card);border-radius:12px;padding:18px;max-width:720px;width:100%;box-shadow:var(--shadow)}
+        .show{display:flex}
+        .tiny{font-size:13px;color:var(--muted)}
+        .pill{display:inline-block;padding:6px 10px;background:var(--beige);border-radius:999px;font-weight:700}
+        .admin-link{font-size:12px;color:var(--muted);cursor:pointer}
+        .success{padding:12px;background:linear-gradient(90deg,#e6fffa,#f0fff4);border:1px solid #bfeedd;border-radius:10px;margin-top:12px}
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="container" role="banner">
+            <header>
+                <div class="logo" aria-label="CAPSY logo">
+                    <div class="mark">C</div>
+                    <div>
+                        <div>CAPSY</div>
+                        <div class="tiny">Centre d’Appui Psychologique et Social</div>
+                    </div>
+                </div>
+
+                <nav role="navigation" aria-label="Main navigation">
+                    <a href="#home" data-i18n="nav.home">Home</a>
+                    <a href="#about" data-i18n="nav.about">About Us</a>
+                    <a href="#activities" data-i18n="nav.activities">Activities</a>
+                    <a href="#booking" data-i18n="nav.book">Book Appointment</a>
+                    <a href="#contact" data-i18n="nav.contact">Contact</a>
+                </nav>
+
+                <div style="display:flex;align-items:center;gap:10px">
+                    <select id="lang" aria-label="Lang selector" title="Language">
+                        <option value="fr">Français</option>
+                        <option value="ht">Kreyòl</option>
+                        <option value="en">English</option>
+                    </select>
+                    <button class="donate-btn" id="topDonate">Donate</button>
+                </div>
+            </header>
+        </div>
+    </div>
+
+    <main class="container" id="home">
+        <section class="hero">
+            <div class="hero-inner" role="region" aria-labelledby="hero-title">
+                <div style="flex:1">
+                    <h1 id="hero-title" data-i18n="hero.title">Supporting Mental Health and Social Well-being in Haiti</h1>
+                    <p class="muted" data-i18n="hero.lead">CAPSY accompagne les individus et les communautés vers un mieux-être durable.</p>
+                    <div class="cta">
+                        <button class="btn btn-primary" id="bookNow" data-i18n="hero.book">Book a Consultation</button>
+                        <button class="btn btn-ghost" id="learnMore" data-i18n="hero.learn">Learn More</button>
+                    </div>
+                </div>
+                <div style="width:260px">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=0f53b29d3d1a1b8b6b5f0b8d0e1789b8" alt="Community support" style="width:100%;border-radius:12px;object-fit:cover;height:180px" />
+                </div>
+            </div>
+
+            <div style="display:flex;gap:16px;align-items:flex-start;margin-top:10px">
+                <div class="card" style="flex:1">
+                    <h3 data-i18n="recent.title">Recent Activities</h3>
+                    <div class="activities" id="activities">
+                        <div class="cards" id="activityCards" aria-live="polite"></div>
+                        <div style="margin-top:10px"><button class="btn btn-ghost" id="seeAll" data-i18n="recent.seeall">See all activities</button></div>
+                    </div>
+                </div>
+
+                <div class="card" style="width:420px" id="booking">
+                    <h3 data-i18n="book.title">Book an Appointment</h3>
+                    <form id="bookingForm" autocomplete="off" aria-labelledby="book-form">
+                        <label data-i18n="book.type">Choose professional</label>
+                        <div class="inline">
+                            <label><input type="radio" name="pro" value="psychologist" checked> <span data-i18n="book.psych">Psychologist</span></label>
+                            <label><input type="radio" name="pro" value="social"> <span data-i18n="book.social">Social Worker</span></label>
+                        </div>
+
+                        <label for="date" data-i18n="book.date">Select date</label>
+                        <input id="date" type="date" required>
+
+                        <label for="time" data-i18n="book.time">Select time</label>
+                        <input id="time" type="time" required>
+
+                        <label for="name" data-i18n="book.name">Full name</label>
+                        <input id="name" type="text" required>
+
+                        <label for="email" data-i18n="book.email">Email</label>
+                        <input id="email" type="email" required>
+
+                        <label for="phone" data-i18n="book.phone">Phone</label>
+                        <input id="phone" type="tel" required placeholder="+509 ...">
+
+                        <label for="notes" data-i18n="book.notes">Notes (optional)</label>
+                        <textarea id="notes" rows="3"></textarea>
+
+                        <label data-i18n="book.paymethod">Payment method</label>
+                        <select id="payMethod">
+                            <option value="card">Credit Card</option>
+                            <option value="mobile">Mobile Payment</option>
+                            <option value="onsite">Pay at session</option>
+                        </select>
+
+                        <div id="cardFields" style="display:block;margin-top:8px">
+                            <label data-i18n="book.card">Card number (mock)</label>
+                            <input id="card" placeholder="4242 4242 4242 4242">
+                        </div>
+
+                        <button class="btn btn-primary" type="submit" style="margin-top:12px" data-i18n="book.submit">Book & Pay</button>
+                        <div id="bookingConfirm" aria-live="polite"></div>
+                        <div style="margin-top:8px" class="tiny">We handle data confidentially. (Demo: no real payments)</div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section style="margin-top:18px">
+            <div class="grid">
+                <div class="card">
+                    <h3 data-i18n="services.title">Our Services</h3>
+                    <ul>
+                        <li data-i18n="services.individual">Individual counseling</li>
+                        <li data-i18n="services.family">Family support</li>
+                        <li data-i18n="services.crisis">Crisis intervention</li>
+                        <li data-i18n="services.community">Community programs</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 data-i18n="about.title">About Us</h3>
+                    <p data-i18n="about.text">CAPSY – Centre d’Appui Psychologique et Social is dedicated to improving mental health and social well-being in Haiti through counseling, community outreach, and support services.</p>
+                    <div class="tiny" style="margin-top:8px">Address: Haiti • Phone: +509 0000 0000 • Email: contact@capsy.ht</div>
+                </div>
+
+                <div class="card">
+                    <h3 data-i18n="support.title">Support Our Mission</h3>
+                    <p class="muted" data-i18n="support.lead">Contribute to sustain our programs and make mental health services accessible.</p>
+                    <button class="btn btn-primary" id="donateNow" style="margin-top:8px" data-i18n="support.btn">Donate</button>
+                </div>
+            </div>
+        </section>
+
+        <footer id="contact" aria-labelledby="footer-heading">
+            <div style="flex:1;min-width:220px">
+                <h4 id="footer-heading" data-i18n="footer.contact">Contact</h4>
+                <div class="tiny">Address: Haiti</div>
+                <div class="tiny">Phone: +509 0000 0000</div>
+                <div class="tiny">Email: contact@capsy.ht</div>
+            </div>
+
+            <div style="flex:1;min-width:220px">
+                <h4 data-i18n="footer.about">About CAPSY</h4>
+                <div class="tiny" data-i18n="footer.desc">CAPSY is dedicated to improving mental health and social well-being in Haiti through counseling, community outreach, and support services.</div>
+            </div>
+
+            <div style="flex:1;min-width:220px">
+                <h4 data-i18n="footer.follow">Follow</h4>
+                <div class="socials">
+                    <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="#1877F2"><path d="M22 12a10 10 0 10-11.5 9.9v-7h-2.2V12h2.2V9.7c0-2.2 1.3-3.4 3.3-3.4.95 0 1.95.17 1.95.17v2.1h-1.07c-1.05 0-1.38.66-1.38 1.34V12h2.36l-.38 2.9h-1.98v7A10 10 0 0022 12z"/></svg></a>
+                    <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="#E1306C"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 6a5 5 0 100 10 5 5 0 000-10zm6-.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg></a>
+                </div>
+
+                <div style="margin-top:12px">
+                    <button class="btn btn-ghost" id="footerDonate" data-i18n="footer.donate">Support our work</button>
+                </div>
+            </div>
+            <div style="width:100%;text-align:center;margin-top:12px" class="tiny">© CAPSY — All rights reserved</div>
+        </footer>
+
+    </main>
+
+    <button class="fixed-donate" id="floatingDonate" aria-label="Donate">❤️</button>
+
+    <!-- Modal shell -->
+    <div id="modalRoot" class="modal-back" role="dialog" aria-modal="true">
+        <div class="modal" id="modalContent"></div>
+    </div>
+
+    <script>
+        // Minimal demo app — no third-party payment included. Replace with secure integrations in production.
+        const translations = {
+            fr:{
+                "nav.home":"Accueil","nav.about":"À propos","nav.activities":"Activités","nav.book":"Prendre RDV","nav.contact":"Contact",
+                "hero.title":"Soutenir la santé mentale et le bien-être social en Haïti",
+                "hero.lead":"CAPSY accompagne les individus et les communautés vers un mieux-être durable.",
+                "hero.book":"Prendre un rendez-vous","hero.learn":"En savoir plus",
+                "recent.title":"Activités récentes","recent.seeall":"Voir toutes les activités",
+                "book.title":"Prendre un rendez-vous","book.type":"Choisir un professionnel","book.psych":"Psychologue","book.social":"Travailleur social",
+                "book.date":"Sélectionner la date","book.time":"Sélectionner l'heure","book.name":"Nom complet","book.email":"Email","book.phone":"Téléphone","book.notes":"Notes (optionnel)","book.paymethod":"Méthode de paiement","book.card":"Numéro de carte (démo)","book.submit":"Réserver & Payer",
+                "services.title":"Nos services","services.individual":"Accompagnement individuel","services.family":"Soutien familial","services.crisis":"Intervention de crise","services.community":"Programmes communautaires",
+                "about.title":"À propos de nous","about.text":"CAPSY – Centre d’Appui Psychologique et Social est dédié à améliorer la santé mentale et le bien-être social en Haïti par le conseil et l’action communautaire.",
+                "support.title":"Soutenez notre mission","support.lead":"Contribuez pour maintenir nos programmes et rendre les services accessibles.","support.btn":"Faire un don",
+                "footer.contact":"Contact","footer.about":"À propos","footer.desc":"CAPSY est dédié à améliorer la santé mentale et le bien-être social en Haïti.","footer.follow":"Suivez-nous","footer.donate":"Soutenez notre travail"
+            },
+            ht:{
+                "nav.home":"Akèy","nav.about":"Sou nou","nav.activities":"Aktivite","nav.book":"Randevou","nav.contact":"Kontakte",
+                "hero.title":"Sipò pou sante mantal ak byennèt sosyal ann Ayiti",
+                "hero.lead":"CAPSY bay sipò pou moun ak kominote pou yon pi bon byennèt dirab.",
+                "hero.book":"Rezève Konsiltasyon","hero.learn":"Aprann plis",
+                "recent.title":"Dènye Aktivite","recent.seeall":"Wè tout aktivite yo",
+                "book.title":"Resève yon randevou","book.type":"Chwazi pwofesyonèl","book.psych":"Sikològ","book.social":"Travayè sosyal",
+                "book.date":"Chwazi dat","book.time":"Chwazi lè","book.name":"Non konplè","book.email":"Imèl","book.phone":"Telefòn","book.notes":"Remak (opsyonèl)","book.paymethod":"Metòd peman","book.card":"Nimewo kat (demo)","book.submit":"Resève & Peye",
+                "services.title":"Sèvis nou yo","services.individual":"Konsèy endividyèl","services.family":"Sipò fanmi","services.crisis":"Entèvansyon kriz","services.community":"Pwogram kominotè",
+                "about.title":"Sou CAPSY","about.text":"CAPSY – Centre d’Appui Psychologique et Social dedye pou amelyore sante mantal ak byennèt sosyal ann Ayiti atravè konsèy ak aksyon kominotè.",
+                "support.title":"Sipòte misyon nou","support.lead":"Kontribye pou soutni pwogram nou yo epi fè sèvis yo disponib.","support.btn":"Fè yon don",
+                "footer.contact":"Kontak","footer.about":"Sou nou","footer.desc":"CAPSY dedye pou amelyore sante mantal ak byennèt sosyal ann Ayiti.","footer.follow":"Swiv nou","footer.donate":"Sipòte travay nou"
+            },
+            en:{
+                "nav.home":"Home","nav.about":"About","nav.activities":"Activities","nav.book":"Book Appointment","nav.contact":"Contact",
+                "hero.title":"Supporting Mental Health and Social Well-being in Haiti",
+                "hero.lead":"CAPSY accompanies individuals and communities toward sustainable well-being.",
+                "hero.book":"Book a Consultation","hero.learn":"Learn More",
+                "recent.title":"Recent Activities","recent.seeall":"See all activities",
+                "book.title":"Book an Appointment","book.type":"Choose professional","book.psych":"Psychologist","book.social":"Social Worker",
+                "book.date":"Select date","book.time":"Select time","book.name":"Full name","book.email":"Email","book.phone":"Phone","book.notes":"Notes (optional)","book.paymethod":"Payment method","book.card":"Card number (demo)","book.submit":"Book & Pay",
+                "services.title":"Our Services","services.individual":"Individual counseling","services.family":"Family support","services.crisis":"Crisis intervention","services.community":"Community programs",
+                "about.title":"About Us","about.text":"CAPSY – Centre d’Appui Psychologique et Social is dedicated to improving mental health and social well-being in Haiti through counseling and community outreach.",
+                "support.title":"Support Our Mission","support.lead":"Contribute to sustain our programs and make services accessible.","support.btn":"Donate",
+                "footer.contact":"Contact","footer.about":"About","footer.desc":"CAPSY is dedicated to improving mental health and social well-being in Haiti.","footer.follow":"Follow","footer.donate":"Support our work"
+            }
+        };
+
+        // Simple i18n
+        function setLang(lang){
+            document.querySelectorAll('[data-i18n]').forEach(el=>{
+                const key=el.getAttribute('data-i18n');
+                if(translations[lang] && translations[lang][key]) el.textContent = translations[lang][key];
+            });
+            document.documentElement.lang = lang;
+        }
+        document.getElementById('lang').addEventListener('change',e=>setLang(e.target.value));
+        setLang('fr');
+
+        // Sample activities (stored in localStorage for simple admin)
+        const defaultActivities = [
+            {id:1,title:"Atelier de soutien communautaire",img:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800&auto=format&fit=crop",excerpt:"Atelier de sensibilisation sur la santé mentale en zone rurale.",content:"Détails du programme..."},
+            {id:2,title:"Programme de prise en charge",img:"https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=800&auto=format&fit=crop",excerpt:"Interventions individuelles et familiales offertes gratuitement.",content:"Détails du programme..."},
+            {id:3,title:"Campagne d'information",img:"https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800&auto=format&fit=crop",excerpt:"Sensibilisation dans les écoles et centres communautaires.",content:"Détails du programme..."}
+        ];
+        function loadActivities(){
+            let list = JSON.parse(localStorage.getItem('capsy.activities')||'null');
+            if(!list){ list = defaultActivities; localStorage.setItem('capsy.activities',JSON.stringify(list)); }
+            const container = document.getElementById('activityCards');
+            container.innerHTML='';
+            list.slice(0,6).forEach(it=>{
+                const el = document.createElement('div'); el.className='activity';
+                el.innerHTML = `<img src="${it.img}" alt="${it.title}"><div class="body"><h3>${it.title}</h3><div class="muted">${it.excerpt}</div><div style="margin-top:8px"><button class="btn btn-ghost" data-id="${it.id}" data-action="read">Read More</button></div></div>`;
+                container.appendChild(el);
+            });
+        }
+        loadActivities();
+
+        // Modal handling
+        const modalRoot = document.getElementById('modalRoot');
+        const modalContent = document.getElementById('modalContent');
+        function openModal(html){ modalContent.innerHTML = html; modalRoot.classList.add('show'); }
+        function closeModal(){ modalRoot.classList.remove('show'); modalContent.innerHTML=''; }
+        modalRoot.addEventListener('click',e=>{ if(e.target===modalRoot) closeModal(); });
+
+        // Read more on activities
+        document.addEventListener('click', e=>{
+            if(e.target && e.target.dataset && e.target.dataset.action==='read'){
+                const id = Number(e.target.dataset.id);
+                const list = JSON.parse(localStorage.getItem('capsy.activities')||'[]');
+                const item = list.find(i=>i.id===id);
+                openModal(`<h3>${item.title}</h3><img src="${item.img}" alt="" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin:8px 0"><p>${item.content}</p><div style="text-align:right"><button class="btn btn-ghost" id="closeModal">Close</button></div>`);
+                document.getElementById('closeModal').onclick = closeModal;
+            }
+        });
+
+        // Booking form logic (demo)
+        const bookingForm = document.getElementById('bookingForm');
+        bookingForm.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            const pro = bookingForm.querySelector('input[name="pro"]:checked').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const notes = document.getElementById('notes').value.trim();
+            const payMethod = document.getElementById('payMethod').value;
+
+            if(!date||!time||!name||!email||!phone){ alert('Please fill required fields'); return; }
+
+            // Simulated payment & booking storage
+            const id = 'BK'+Date.now().toString(36).slice(-6).toUpperCase();
+            const booking = {id,pro,date,time,name,email,phone,notes,payMethod,created:Date.now()};
+            const existing = JSON.parse(localStorage.getItem('capsy.bookings')||'[]');
+            existing.unshift(booking);
+            localStorage.setItem('capsy.bookings', JSON.stringify(existing));
+
+            document.getElementById('bookingConfirm').innerHTML = `<div class="success"><strong>Confirmed — ${id}</strong><div class="tiny">A confirmation has been recorded (demo).</div></div>`;
+            bookingForm.reset();
+            setTimeout(()=>document.getElementById('bookingConfirm').innerHTML = '',5000);
+        });
+
+        // Show/hide card fields
+        document.getElementById('payMethod').addEventListener('change',e=>{
+            document.getElementById('cardFields').style.display = e.target.value==='card' ? 'block' : 'none';
+        });
+
+        // Donation modal
+        function openDonate(){
+            openModal(`<h3 data-i18n="support.title">Support Our Mission</h3>
+                <p class="muted" data-i18n="support.lead">Contribute to sustain our programs and make mental health services accessible.</p>
+                <label>Amount (USD)</label><input id="donAmt" type="number" min="1" value="20">
+                <label>Payment method</label><select id="donMethod"><option value="card">Credit Card</option><option value="mobile">Mobile Payment</option></select>
+                <div style="margin-top:12px;text-align:right"><button class="btn btn-ghost" id="closeDon">Cancel</button><button class="btn btn-primary" id="donSubmit" style="margin-left:8px">Donate</button></div>`);
+            document.getElementById('closeDon').onclick = closeModal;
+            document.getElementById('donSubmit').onclick = ()=> {
+                const amt = Number(document.getElementById('donAmt').value)||0;
+                if(amt<=0){ alert('Enter amount'); return; }
+                // store donation (demo)
+                const d = {id:'DN'+Date.now().toString(36).slice(-6),amount:amt,method:document.getElementById('donMethod').value,created:Date.now()};
+                const ds = JSON.parse(localStorage.getItem('capsy.donations')||'[]'); ds.unshift(d); localStorage.setItem('capsy.donations',JSON.stringify(ds));
+                openModal(`<div class="success"><strong>Thank you — Donation recorded (demo)</strong><div class="tiny">Amount: $${amt.toFixed(2)}</div></div><div style="text-align:right;margin-top:12px"><button class="btn btn-primary" id="closeThanks">Close</button></div>`);
+                document.getElementById('closeThanks').onclick = closeModal;
+            };
+        }
+
+        document.getElementById('topDonate').addEventListener('click',openDonate);
+        document.getElementById('donateNow').addEventListener('click',openDonate);
+        document.getElementById('floatingDonate').addEventListener('click',openDonate);
+        document.getElementById('footerDonate').addEventListener('click',openDonate);
+
+        // Quick "Book" scroll
+        document.getElementById('bookNow').addEventListener('click', ()=> location.hash='#booking');
+        document.getElementById('learnMore').addEventListener('click', ()=> location.hash='#about');
+
+        // Simple admin panel: open with ?admin=1 or via small clickable text
+        function openAdmin(){
+            const activities = JSON.parse(localStorage.getItem('capsy.activities')||'[]');
+            const bookings = JSON.parse(localStorage.getItem('capsy.bookings')||'[]');
+            openModal(`<h3>Admin (demo)</h3>
+                <div style="display:flex;gap:12px">
+                    <div style="flex:1"><h4>Activities</h4><div id="adminActs">${activities.map(a=>`<div style="border-bottom:1px solid #eee;padding:6px 0"><strong>${a.title}</strong><div class="tiny">${a.excerpt}</div></div>`).join('')}</div>
+                        <h4 style="margin-top:8px">Add activity</h4>
+                        <label>Title</label><input id="adTitle"><label>Image URL</label><input id="adImg"><label>Excerpt</label><input id="adEx">
+                        <div style="text-align:right;margin-top:8px"><button class="btn btn-primary" id="addAct">Add</button></div>
+                    </div>
+                    <div style="flex:1"><h4>Bookings</h4><div style="max-height:300px;overflow:auto" id="adminBooks">${bookings.map(b=>`<div style="border-bottom:1px solid #eee;padding:6px 0"><strong>${b.id}</strong> <div class="tiny">${b.name} • ${b.date} ${b.time}</div></div>`).join('')}</div></div>
+                </div><div style="text-align:right;margin-top:12px"><button class="btn btn-ghost" id="closeAdmin">Close</button></div>`);
+            document.getElementById('closeAdmin').onclick = closeModal;
+            document.getElementById('addAct').onclick = ()=>{
+                const t=document.getElementById('adTitle').value.trim();
+                const img=document.getElementById('adImg').value.trim()||'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800&auto=format&fit=crop';
+                const ex=document.getElementById('adEx').value.trim()||'';
+                if(!t){ alert('Title required'); return; }
+                const list = JSON.parse(localStorage.getItem('capsy.activities')||'[]');
+                list.unshift({id:Date.now(),title:t,img,excerpt:ex,content:t});
+                localStorage.setItem('capsy.activities',JSON.stringify(list));
+                loadActivities();
+                closeModal();
+            };
+        }
+
+        // open admin via query param or small link
+        if(location.search.includes('admin=1')) openAdmin();
+        const adminLink = document.createElement('div'); adminLink.className='admin-link container'; adminLink.style.textAlign='center'; adminLink.style.marginTop='8px'; adminLink.innerHTML='<span style="cursor:pointer" id="openAdmin">Open admin (demo)</span>';
+        document.body.insertBefore(adminLink, document.querySelector('main').nextSibling);
+        document.getElementById('openAdmin').onclick = ()=>{ const pw = prompt('Admin demo — enter password'); if(pw==='admin') openAdmin(); else alert('Denied'); };
+
+        // Initialize placeholders
+        document.querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>img.style.opacity=0.6));
+    </script>
+</body>
+</html>
